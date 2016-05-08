@@ -1,0 +1,25 @@
+RGSRC=../..
+include $(RGSRC)/envir.mak
+ifdef ACTION_TEC_80211N
+ifeq ($(CONFIG_ATHEROS_AR531X_MIPS)$(CONFIG_RG_ATHEROS_HW_AR5416),)
+  SUBDIRS+=madwifi_org
+endif
+else
+ifeq ($(CONFIG_ATHEROS_AR531X_MIPS),)
+  SUBDIRS+=madwifi_org
+endif
+endif
+
+SUBDIRS+=$(if $(CONFIG_ATHEROS_AR531X_MIPS),ar531x)
+SUBDIRS+=$(if $(CONFIG_RG_ATHEROS_HW_AR5212),madwifi)
+ifdef ACTION_TEC_80211N
+SUBDIRS+=$(if $(CONFIG_RG_ATHEROS_HW_AR5416),pb42_kiwi_rc)
+SUBDIRS+=$(if $(CONFIG_RG_ATHEROS_ART),art)
+JPKG_EXPORTED_DIR+=madwifi_org madwifi pb42_kiwi_rc
+else
+SUBDIRS+=$(if $(CONFIG_RG_ATHEROS_HW_AR5416),AR5008)
+JPKG_EXPORTED_DIR_SRC+=madwifi AR5008
+endif
+
+
+include $(RGMK)
